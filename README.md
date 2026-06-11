@@ -18,7 +18,6 @@
 - [Bước 9 – Tạo DetailActivity](#bước-9--tạo-detailactivity)
 - [Bước 10 – Cập Nhật AndroidManifest](#bước-10--cập-nhật-androidmanifest)
 - [Bước 11 – Chạy & Kiểm Tra](#bước-11--chạy--kiểm-tra)
-- [Hình Ảnh Minh Hoạ](#hình-ảnh-minh-hoạ)
 - [Tổng Kết](#tổng-kết)
 
 ---
@@ -1267,26 +1266,24 @@ Hoặc: Shift + F10
 
 
 ### 11.3 Checklist kiểm tra
+| STT | Nội dung kiểm thử |
+|-----|-------------------|
+| 1 | Mở ứng dụng và hiển thị danh sách món ăn |
+| 2 | Hiển thị đúng hình ảnh món ăn từ thư mục Assets |
+| 3 | Hiển thị chính xác tên món ăn, vùng miền và mô tả |
+| 4 | Bộ lọc **"Miền Bắc"** chỉ hiển thị các món thuộc miền Bắc |
+| 5 | Bộ lọc **"Tất Cả"** hiển thị lại toàn bộ danh sách món ăn |
+| 6 | Nhấn vào món ăn mở được màn hình chi tiết |
+| 7 | Màn hình chi tiết hiển thị đầy đủ ảnh, tên món ăn, đặc trưng vùng miền, mô tả và nguyên liệu |
+| 8 | Nút **Back** trên `DetailActivity` hoạt động đúng |
+| 9 | Ứng dụng hoạt động bình thường khi tắt Wi-Fi (Offline Mode) |
 
-```
-☐ App mở được, hiển thị danh sách món ăn
-☐ Ảnh hiển thị đúng (load từ Assets)
-☐ Tên, vùng miền, mô tả hiển thị đúng
-☐ Nút filter "Miền Bắc" → chỉ hiện món Bắc
-☐ Nút filter "Tất Cả" → hiện lại tất cả
-☐ Click vào món → mở màn hình chi tiết
-☐ Chi tiết hiển thị đầy đủ: ảnh, tên, đặc trưng, mô tả, nguyên liệu
-☐ Nút Back trên DetailActivity hoạt động
-☐ App chạy được khi TẮT WIFI (test offline)
-```
 <img width="441" height="975" alt="image" src="https://github.com/user-attachments/assets/85750cb1-6cd4-461d-9b9d-f3055fb4722e" />
 <img width="444" height="969" alt="image" src="https://github.com/user-attachments/assets/7cf745a4-1730-4c55-a121-68870a90b4df" />
 <img width="426" height="971" alt="image" src="https://github.com/user-attachments/assets/498e5e16-f1e7-4b08-a26e-8b1dafd0809e" />
 <img width="441" height="968" alt="image" src="https://github.com/user-attachments/assets/169a1c20-0b8c-4dbf-ac26-0cc7f0de77c0" />
 
-
 ---
-
 
 ## Tổng Kết
 
@@ -1302,11 +1299,4 @@ Hoặc: Shift + F10
 | **Filter** | Lọc danh sách theo trường `vung` |
 | **Offline** | 100% hoạt động không cần mạng |
 
-### Đặc thù dữ liệu & Thuật toán
-
-```
-Dữ liệu: Mảng JSON phẳng, mỗi phần tử có field phân loại "vung"
-Thuật toán filter: O(n) – duyệt toàn bộ List, giữ phần tử thoả điều kiện
-Hiển thị: RecyclerView với ViewHolder pattern – tái sử dụng View, tiết kiệm bộ nhớ
-Ảnh: Decode bitmap từ InputStream của AssetManager
-```
+# The End
