@@ -35,6 +35,194 @@
 | **Ngôn ngữ** | Java |
 | **Min SDK** | API 24 (Android 7.0) |
 
+
+### 1. Tự Đặt Vấn Đề
+
+**Vấn đề đặt ra:**  
+Người học muốn tra cứu các món ăn đặc trưng 3 miền Việt Nam — bao gồm tên, hình ảnh, nguyên liệu và cách nhận biết — kể cả khi **không có kết nối Internet** (đang đi du lịch, vùng sóng yếu, v.v.).
+
+**Giải pháp chọn:**  
+Đóng gói toàn bộ dữ liệu (file JSON + ảnh) vào thư mục `assets/` ngay trong app. Khi app được cài lên thiết bị, dữ liệu đi kèm theo — không cần gọi API, không cần mạng.
+
+---
+
+### 2. Mô Tả Đặc Thù Dữ Liệu
+
+Dữ liệu được lưu tại `assets/data/amthuc.json` — là một **mảng JSON phẳng** (flat array), mỗi phần tử đại diện cho một món ăn.
+
+#### 2.1 Cấu trúc một phần tử
+
+```json
+{
+  "id": 1,
+  "ten": "Phở Bò",
+  "vung": "Bắc",
+  "mo_ta": "Món ăn truyền thống...",
+  "nguyen_lieu": ["Xương bò", "Bánh phở", "Hành tây"],
+  "image": "images/pho.jpg",
+  "dac_trung": "Nước dùng trong, thanh ngọt",
+  "do_kho": 3
+}
+```
+
+#### 2.2 Đặc thù đáng chú ý
+
+| Trường | Kiểu | Đặc thù |
+|---|---|---|
+| `vung` | String | Giá trị rời rạc: `"Bắc"` / `"Trung"` / `"Nam"` → phù hợp để **phân nhóm, filter** |
+| `nguyen_lieu` | **JSONArray lồng** | Mảng bên trong mảng → phải parse 2 cấp, không thể đọc thẳng như String |
+| `image` | String (đường dẫn tương đối) | Không phải URL mạng, là đường dẫn trong `assets/` → phải dùng `AssetManager` để mở |
+| `do_kho` | int (1–3) | Dữ liệu số nguyên → có thể hiển thị dạng icon 🔥 hoặc sắp xếp theo độ khó |
+| `id` | int | Định danh duy nhất → dùng khi cần tra cứu hoặc so sánh chính xác |
+
+**Kết luận đặc thù:**  
+Dữ liệu có **trường phân loại rời rạc** (`vung`) và **trường lồng** (`nguyen_lieu`) — đây là 2 điểm cần xử lý đặc biệt, không thể đọc và hiển thị trực tiếp mà không qua bước parse.
+
+---
+
+### 3. Có Cần Tiền Xử Lý Trước Khi Hiển Thị Không?
+
+**Có — cần tiền xử lý ở 2 điểm:**
+
+#### 3.1 Parse JSON → Object Java
+
+Dữ liệu trong Assets là **chuỗi văn bản thuần túy** (raw text). Không thể gán thẳng vào TextView hay ImageView. Phải trải qua pipeline:
+
+```
+File JSON (text)
+    → đọc bằng InputStream
+    → chuyển thành String (UTF-8)
+    → parse bằng JSONArray / JSONObject
+    → tạo đối tượng MonAn (Java)
+    → đưa vào List<MonAn>
+    → truyền cho Adapter để hiển thị
+```
+
+#### 3.2 Xử lý trường `nguyen_lieu` (mảng lồng)
+
+Trường này là `JSONArray` bên trong `JSONObject` — phải parse vòng lặp riêng:
+
+```java
+JSONArray nlArr = obj.getJSONArray("nguyen_lieu");
+List<String> nguyenLieu = new ArrayList<>();
+for (int j = 0; j < nlArr.length(); j++) {
+    nguyenLieu.add(nlArr.getString(j));
+}
+```
+
+Khi truyền sang `DetailActivity`, danh sách này tiếp tục được **tiền xử lý thêm một lần nữa** — nối thành chuỗi hiển thị với ký tự `•`:
+
+```java
+StringBuilder sb = new StringBuilder();
+for (String nl : mon.getNguyen_lieu()) {
+    sb.append("• ").append(nl).append("\n");
+}
+intent.putExtra("MON_NGUYEN_LIEU", sb.toString().trim());
+```
+
+**Lý do cần bước này:** `TextView` chỉ nhận `String`, không nhận `List<String>` trực tiếp.
+
+#### 3.3 Load ảnh từ Assets
+
+Đường dẫn `"images/pho.jpg"` trong JSON không phải URL — phải mở thủ công qua `AssetManager` và decode thành `Bitmap`:
+
+```java
+InputStream is = context.getAssets().open(mon.getImage());
+Bitmap bitmap = BitmapFactory.decodeStream(is);
+holder.imgMon.setImageBitmap(bitmap);
+```
+
+---
+
+### 4. Thuật Toán Xử Lý Dữ Liệu
+
+#### 4.1 Thuật toán Filter theo vùng miền
+
+**Bài toán:** Người dùng nhấn "Miền Bắc" → chỉ hiển thị các món có `vung == "Bắc"`.
+
+**Thuật toán:** Duyệt tuyến tính — **O(n)**
+
+```
+Đầu vào : danhSachTatCa (List đầy đủ), vung (String bộ lọc)
+Đầu ra  : danhSachHienThi (List đã lọc)
+
+1. Xoá toàn bộ danhSachHienThi
+2. Nếu vung == "all":
+       Thêm tất cả phần tử từ danhSachTatCa vào danhSachHienThi
+   Ngược lại:
+       Duyệt từng MonAn trong danhSachTatCa:
+           Nếu MonAn.getVung() == vung:
+               Thêm MonAn vào danhSachHienThi
+3. Gọi adapter.notifyDataSetChanged() để cập nhật UI
+```
+
+**Tại sao không cần thuật toán phức tạp hơn?**  
+Dữ liệu chỉ có ~6 phần tử (có thể mở rộng đến vài trăm). Với kích thước nhỏ, O(n) là lựa chọn đơn giản, đủ hiệu quả và dễ bảo trì. Nếu dữ liệu lớn hơn (hàng nghìn món), có thể cân nhắc **pre-group** — phân nhóm sẵn thành `Map<String, List<MonAn>>` khi load, tra cứu O(1).
+
+#### 4.2 Thuật toán Parse JSON (đọc một lần khi khởi động)
+
+Chỉ chạy **một lần duy nhất** trong `onCreate` → kết quả lưu vào `danhSachTatCa`. Các lần filter sau đó không đọc lại file — tiết kiệm I/O.
+
+---
+
+### 5. Đối Tượng Hiển Thị Dữ Liệu
+
+#### 5.1 Màn hình danh sách — RecyclerView + CardView
+
+| Lý do chọn RecyclerView | Giải thích |
+|---|---|
+| **ViewHolder pattern** | Tái sử dụng View đã inflate, không tạo mới mỗi lần scroll → tiết kiệm bộ nhớ, mượt mà |
+| **Chỉ render View đang hiển thị** | Không render toàn bộ 100 item cùng lúc → phù hợp danh sách dài |
+| **Dễ cập nhật** | `notifyDataSetChanged()` sau filter → UI tự cập nhật |
+
+**CardView** bọc ngoài mỗi item → tạo hiệu ứng nổi (elevation), bo góc, dễ nhìn.
+
+#### 5.2 Màn hình chi tiết — ScrollView + LinearLayout
+
+Nội dung chi tiết (ảnh lớn + văn bản dài) có thể vượt quá chiều cao màn hình → dùng `ScrollView` để cuộn. Bên trong dùng `LinearLayout` (orientation: vertical) để xếp các thành phần từ trên xuống theo thứ tự tự nhiên.
+
+#### 5.3 Sơ đồ luồng hiển thị
+
+```mermaid
+flowchart TB
+    subgraph DATA["Tầng dữ liệu"]
+        direction LR
+        A["amthuc.json"] --> B["InputStream"] --> C["JSONArray"] --> D["List&lt;MonAn&gt;"]
+    end
+    subgraph PROCESS["Tầng xử lý dữ liệu"]
+        direction LR
+        E["Filter O(n)"] --> F["List&lt;MonAn&gt; đã lọc"] --> G["MonAnAdapter"]
+    end
+    subgraph UI["Tầng giao diện người dùng"]
+        direction LR
+        H["RecyclerView"] --> I["CardView<br/>Ảnh / Tên món<br/>Vùng miền / Mô tả"] --> J["Intent + putExtra"] --> K["DetailActivity<br/>ScrollView / Ảnh<br/>Tên / Mô tả / Nguyên liệu"]
+    end
+    DATA --> PROCESS --> UI
+    K -. "Back / finish()" .-> H
+```
+---
+
+### 6. Lợi Ích Của Cơ Chế Assets
+
+| Lợi ích | Giải thích |
+|---|---|
+| **Offline hoàn toàn** | Dữ liệu đi kèm app, không phụ thuộc mạng |
+| **Tốc độ** | Đọc từ bộ nhớ thiết bị, nhanh hơn HTTP request |
+| **Đơn giản** | Không cần server, không cần xử lý lỗi mạng |
+| **Phù hợp nội dung tĩnh** | Danh mục món ăn, từ điển, hướng dẫn — ít thay đổi theo thời gian |
+
+**Cú pháp truy cập Assets:**
+```java
+// Đọc file text/JSON
+InputStream is = getAssets().open("data/amthuc.json");
+
+// Đọc file ảnh
+InputStream is = getAssets().open("images/pho.jpg");
+Bitmap bmp = BitmapFactory.decodeStream(is);
+```
+
+**Giới hạn cần lưu ý:** Dữ liệu trong Assets là **chỉ đọc** — không thể ghi/sửa từ code. Nếu cần dữ liệu cập nhật thường xuyên, phải dùng API hoặc database.
+
 ---
 
 ## Bước 1 – Tạo Project Mới
@@ -789,13 +977,13 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.ViewHolder> 
     }
 }
 ```
-<img width="1583" height="969" alt="image" src="https://github.com/user-attachments/assets/051b96b5-5eb7-4110-833c-ce162d0a8dfe" />
+<img width="1724" height="967" alt="image" src="https://github.com/user-attachments/assets/5aed2791-cdcb-49fd-a7a6-9ac7e2ff14a8" />
 
 ---
 
 ## Bước 8 – Viết MainActivity
 
-Mở file `MainActivity.java` (đã có sẵn, viết đè nội dung):
+Mở file `MainActivity.java`:
 
 ```java
 package com.example.amthucvietnam;
@@ -920,7 +1108,7 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
-<img width="1640" height="950" alt="image" src="https://github.com/user-attachments/assets/31f06719-5f24-4f97-8680-70c10d601f56" />
+<img width="1750" height="966" alt="image" src="https://github.com/user-attachments/assets/be726fda-1fb4-4e47-a4cc-0d04988a4b1d" />
 
 
 ---
@@ -1010,7 +1198,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 }
 ```
-<img width="1442" height="961" alt="image" src="https://github.com/user-attachments/assets/e55ebd72-9b15-4a61-83ed-02609301cd85" />
+<img width="1751" height="975" alt="image" src="https://github.com/user-attachments/assets/088b763c-0ac8-4c05-8334-ccb6f916207c" />
 
 ---
 
