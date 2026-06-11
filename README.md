@@ -45,14 +45,12 @@
 File → New → New Project
 ```
 
-> *(Chèn ảnh: màn hình chọn New Project)*
-
 ### 1.2 Chọn Template
 
 - Chọn **"Empty Views Activity"**
 - Click **Next**
 
-> *(Chèn ảnh: màn hình chọn template Empty Views Activity)*
+<img width="1170" height="828" alt="image" src="https://github.com/user-attachments/assets/57f402b7-39a4-4e9c-8f87-0fa2ebaeb64e" />
 
 ### 1.3 Cấu Hình Project
 
@@ -66,16 +64,16 @@ File → New → New Project
 | **Language** | `Java` |
 | **Minimum SDK** | `API 24 ("Nougat"; Android 7.0)` |
 
-> *(Chèn ảnh: màn hình điền thông tin project)*
+<img width="1142" height="822" alt="image" src="https://github.com/user-attachments/assets/491dbbdd-d68f-4a52-8b13-f3b88fd45d0e" />
 
 - Click **Finish** → Chờ Android Studio tạo project và sync Gradle lần đầu (~1-3 phút)
 
-> *(Chèn ảnh: màn hình project sau khi tạo xong)*
+<img width="1752" height="978" alt="image" src="https://github.com/user-attachments/assets/1e1af56b-dae2-46de-bc40-7b4f21b80836" />
 
 ### 1.4 Cấu Trúc Project Sau Khi Tạo
 
 ```
-AmThucVietNam/
+App1_AmThucVietNam/
 ├── app/
 │   ├── src/main/
 │   │   ├── java/com/example/amthucvietnam/
@@ -91,52 +89,54 @@ AmThucVietNam/
 │   └── build.gradle                    ← Gradle cấp app
 └── build.gradle                        ← Gradle cấp project
 ```
+<img width="1620" height="923" alt="image" src="https://github.com/user-attachments/assets/0e203d24-a630-4820-b503-593339ce0a37" />
+
 
 ---
 
 ## Bước 2 – Cấu Hình build.gradle
 
-Mở file `app/build.gradle` và kiểm tra / thêm:
+Mở file `app/build.gradle.kts` và kiểm tra / thêm:
 
 ```gradle
 android {
-    compileSdk 34
+    compileSdk = 34
 
     defaultConfig {
-        applicationId "com.example.amthucvietnam"
-        minSdk 24
-        targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        applicationId = "com.example.amthucvietnam"
+        minSdk = 24
+        targetSdk = 34
+        versionCode = 1
+        versionName = "1.0"
     }
 
     buildTypes {
-        release {
-            minifyEnabled false
+        getByName("release") {
+            isMinifyEnabled = false
         }
     }
+
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.11.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     // RecyclerView – hiển thị danh sách
-    implementation 'androidx.recyclerview:recyclerview:1.3.2'
-
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     // CardView – hiệu ứng card cho từng item
-    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation("androidx.cardview:cardview:1.0.0")
 }
 ```
 
 Sau khi sửa → Click **"Sync Now"** (thanh vàng xuất hiện phía trên)
 
-> *(Chèn ảnh: thanh Sync Now)*
+<img width="1724" height="985" alt="image" src="https://github.com/user-attachments/assets/e93843bc-1643-4a49-b391-e2e4356222e3" />
 
 ---
 
@@ -149,21 +149,11 @@ Chuột phải vào thư mục main → New → Directory
 → Gõ: assets
 → Enter
 ```
+<img width="1647" height="959" alt="image" src="https://github.com/user-attachments/assets/b2b9b374-025f-44bb-b5d7-ed00edf90731" />
 
-Hoặc:
-```
-Chuột phải vào app → New → Folder → Assets Folder
-→ Click Finish
-```
-
-> *(Chèn ảnh: tạo thư mục assets)*
 
 ### 3.2 Tạo cấu trúc thư mục con
 
-Trong **Windows Explorer**, tìm đến đường dẫn:
-```
-[Thư mục project]\app\src\main\assets\
-```
 
 Tạo thủ công 2 thư mục con:
 ```
@@ -172,7 +162,7 @@ assets/
 └── images/      ← chứa ảnh các món ăn
 ```
 
-> *(Chèn ảnh: cấu trúc thư mục trong Windows Explorer)*
+<img width="1636" height="969" alt="image" src="https://github.com/user-attachments/assets/e638973f-552e-498d-a1fa-b18371952205" />
 
 ### 3.3 Tạo file `amthuc.json`
 
@@ -243,13 +233,16 @@ Trong thư mục `assets/data/`, tạo file `amthuc.json`:
 ]
 ```
 
+<img width="1737" height="957" alt="image" src="https://github.com/user-attachments/assets/b4490fc6-2333-4737-a689-2831df044542" />
+
 ### 3.4 Copy ảnh vào thư mục `assets/images/`
 
 - Tìm hoặc tải ảnh các món ăn (JPG/PNG)
 - Đổi tên ảnh đúng với trường `"image"` trong JSON: `pho.jpg`, `buncha.jpg`, `bunbohue.jpg`, `miquang.jpg`, `banhmi.jpg`, `hutieu.jpg`
 - Copy vào `assets/images/` bằng Windows Explorer
 
-> *(Chèn ảnh: các file ảnh đã copy vào thư mục)*
+<img width="1274" height="586" alt="image" src="https://github.com/user-attachments/assets/caaa75b5-5f97-426b-9f40-1c247dd6a7c7" />
+
 
 ---
 
@@ -271,6 +264,7 @@ Trong thư mục `assets/data/`, tạo file `amthuc.json`:
     <string name="no_result">Không có món ăn nào.</string>
 </resources>
 ```
+<img width="1734" height="957" alt="image" src="https://github.com/user-attachments/assets/52274562-4a28-440f-93a3-e67a1bbea4ff" />
 
 ### 4.2 `res/values/colors.xml`
 
@@ -289,6 +283,7 @@ Trong thư mục `assets/data/`, tạo file `amthuc.json`:
     <color name="divider">#EEEEEE</color>
 </resources>
 ```
+<img width="1680" height="894" alt="image" src="https://github.com/user-attachments/assets/2570ca02-fa39-4dc8-8050-ff445fe48c4d" />
 
 ### 4.3 `res/values/dimens.xml`
 
@@ -303,6 +298,7 @@ Trong thư mục `assets/data/`, tạo file `amthuc.json`:
     <dimen name="card_radius">12dp</dimen>
 </resources>
 ```
+<img width="1736" height="946" alt="image" src="https://github.com/user-attachments/assets/cd8c1343-81ab-43dd-9028-4b0163c6f1df" />
 
 ---
 
@@ -316,6 +312,7 @@ Chuột phải vào package gốc (com.example.amthucvietnam)
 → Gõ: model
 → Enter
 ```
+<img width="1550" height="988" alt="image" src="https://github.com/user-attachments/assets/ef0f1cb9-06de-4d43-9736-7ac7c4432c7a" />
 
 ### 5.2 Tạo class `MonAn.java`
 
@@ -325,6 +322,7 @@ Chuột phải vào package model
 → Gõ: MonAn
 → Enter
 ```
+<img width="1555" height="960" alt="image" src="https://github.com/user-attachments/assets/43ef05dc-110b-4366-ad27-5f910936fb4c" />
 
 Nội dung file:
 
