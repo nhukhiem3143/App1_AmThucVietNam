@@ -473,7 +473,8 @@ Chuột phải vào res/drawable → New → Drawable Resource File
     <corners android:radius="20dp" />
 </shape>
 ```
-<img width="1625" height="959" alt="image" src="https://github.com/user-attachments/assets/50ec29b0-7b08-44c0-ae46-ff6c99a3b7ef" />
+<img width="1569" height="905" alt="image" src="https://github.com/user-attachments/assets/0572f720-64b2-4b44-9191-d4514fdeec8a" />
+
 
 ### 6.3 Layout màn hình chính – `res/layout/activity_main.xml`
 
@@ -919,7 +920,8 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
-<img width="1576" height="966" alt="image" src="https://github.com/user-attachments/assets/0f88b92c-72ed-40e9-affd-4862878b6d3e" />
+<img width="1640" height="950" alt="image" src="https://github.com/user-attachments/assets/31f06719-5f24-4f97-8680-70c10d601f56" />
+
 
 ---
 
@@ -933,7 +935,8 @@ Chuột phải vào package gốc → New → Activity → Empty Views Activity
 → Layout Name: activity_detail  (tự điền)
 → Finish
 ```
-<img width="1137" height="834" alt="image" src="https://github.com/user-attachments/assets/603b87bf-7519-4e21-8fa3-dfab67693381" />
+
+<img width="1142" height="826" alt="image" src="https://github.com/user-attachments/assets/9a716b50-b3e3-455e-8d6d-092afa3595de" />
 
 > **Lưu ý:** Android Studio tự động thêm `<activity android:name=".DetailActivity"/>` vào `AndroidManifest.xml`
 
@@ -1065,16 +1068,6 @@ Mở `AndroidManifest.xml` và kiểm tra:
 4. Chọn "Cho phép gỡ lỗi USB" trên thiết bị
 ```
 
-**Dùng Emulator:**
-```
-Tools → Device Manager → Create Device
-→ Chọn: Pixel 6 → Next
-→ Chọn API: API 34 → Download nếu chưa có → Next → Finish
-→ Click ▶ để khởi động
-```
-
-> *(Chèn ảnh: Device Manager)*
-
 ### 11.2 Build & Run
 
 ```
@@ -1082,7 +1075,8 @@ Click nút ▶ (Run) trên toolbar
 Hoặc: Shift + F10
 ```
 
-> *(Chèn ảnh: nút Run trên toolbar)*
+<img width="441" height="975" alt="image" src="https://github.com/user-attachments/assets/4aa7ceaf-a1d2-4fdc-bba8-4cd4adebbbe6" />
+
 
 ### 11.3 Checklist kiểm tra
 
@@ -1097,22 +1091,14 @@ Hoặc: Shift + F10
 ☐ Nút Back trên DetailActivity hoạt động
 ☐ App chạy được khi TẮT WIFI (test offline)
 ```
+<img width="441" height="975" alt="image" src="https://github.com/user-attachments/assets/85750cb1-6cd4-461d-9b9d-f3055fb4722e" />
+<img width="444" height="969" alt="image" src="https://github.com/user-attachments/assets/7cf745a4-1730-4c55-a121-68870a90b4df" />
+<img width="426" height="971" alt="image" src="https://github.com/user-attachments/assets/498e5e16-f1e7-4b08-a26e-8b1dafd0809e" />
+<img width="441" height="968" alt="image" src="https://github.com/user-attachments/assets/169a1c20-0b8c-4dbf-ac26-0cc7f0de77c0" />
+
 
 ---
 
-## Hình Ảnh Minh Hoạ
-
-> *(Chèn ảnh theo từng bước dưới đây)*
-
-| Bước | Mô tả | Ảnh |
-|---|---|---|
-| Bước 1 | Tạo project mới | *(chèn ảnh)* |
-| Bước 3 | Cấu trúc Assets | *(chèn ảnh)* |
-| Bước 11 | App chạy – màn hình danh sách | *(chèn ảnh)* |
-| Bước 11 | App chạy – màn hình chi tiết | *(chèn ảnh)* |
-| Bước 11 | App chạy – filter vùng miền | *(chèn ảnh)* |
-
----
 
 ## Tổng Kết
 
