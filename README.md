@@ -322,7 +322,8 @@ Chuột phải vào package model
 → Gõ: MonAn
 → Enter
 ```
-<img width="1555" height="960" alt="image" src="https://github.com/user-attachments/assets/43ef05dc-110b-4366-ad27-5f910936fb4c" />
+<img width="1539" height="959" alt="image" src="https://github.com/user-attachments/assets/b8b306f4-67b1-48f2-8070-881d533dadc0" />
+
 
 Nội dung file:
 
@@ -377,6 +378,7 @@ Chuột phải vào res/layout → New → Layout Resource File
 → Root element: androidx.cardview.widget.CardView
 → OK
 ```
+<img width="1327" height="917" alt="image" src="https://github.com/user-attachments/assets/76da135f-6e59-4cf0-9d5f-d6ac569d154e" />
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -453,6 +455,7 @@ Chuột phải vào res/layout → New → Layout Resource File
     </LinearLayout>
 </androidx.cardview.widget.CardView>
 ```
+<img width="1690" height="969" alt="image" src="https://github.com/user-attachments/assets/248177e3-7c52-49a9-89c3-b7080e00ba3c" />
 
 ### 6.2 Tạo drawable badge – `res/drawable/badge_background.xml`
 
@@ -470,6 +473,7 @@ Chuột phải vào res/drawable → New → Drawable Resource File
     <corners android:radius="20dp" />
 </shape>
 ```
+<img width="1625" height="959" alt="image" src="https://github.com/user-attachments/assets/50ec29b0-7b08-44c0-ae46-ff6c99a3b7ef" />
 
 ### 6.3 Layout màn hình chính – `res/layout/activity_main.xml`
 
@@ -557,6 +561,7 @@ Chuột phải vào res/drawable → New → Drawable Resource File
 
 </LinearLayout>
 ```
+<img width="1624" height="953" alt="image" src="https://github.com/user-attachments/assets/eacc05d0-603c-4701-a0b5-b303e96e2fc6" />
 
 ### 6.4 Layout màn hình chi tiết – `res/layout/activity_detail.xml`
 
@@ -657,6 +662,7 @@ Chuột phải vào res/drawable → New → Drawable Resource File
     </LinearLayout>
 </ScrollView>
 ```
+<img width="1620" height="962" alt="image" src="https://github.com/user-attachments/assets/0cedecb1-3629-4a65-ba82-8d786f3dcadc" />
 
 ---
 
@@ -782,6 +788,7 @@ public class MonAnAdapter extends RecyclerView.Adapter<MonAnAdapter.ViewHolder> 
     }
 }
 ```
+<img width="1583" height="969" alt="image" src="https://github.com/user-attachments/assets/051b96b5-5eb7-4110-833c-ce162d0a8dfe" />
 
 ---
 
@@ -912,6 +919,7 @@ public class MainActivity extends AppCompatActivity {
     }
 }
 ```
+<img width="1576" height="966" alt="image" src="https://github.com/user-attachments/assets/0f88b92c-72ed-40e9-affd-4862878b6d3e" />
 
 ---
 
@@ -925,8 +933,7 @@ Chuột phải vào package gốc → New → Activity → Empty Views Activity
 → Layout Name: activity_detail  (tự điền)
 → Finish
 ```
-
-> *(Chèn ảnh: tạo Activity mới)*
+<img width="1137" height="834" alt="image" src="https://github.com/user-attachments/assets/603b87bf-7519-4e21-8fa3-dfab67693381" />
 
 > **Lưu ý:** Android Studio tự động thêm `<activity android:name=".DetailActivity"/>` vào `AndroidManifest.xml`
 
@@ -1000,6 +1007,7 @@ public class DetailActivity extends AppCompatActivity {
     }
 }
 ```
+<img width="1442" height="961" alt="image" src="https://github.com/user-attachments/assets/e55ebd72-9b15-4a61-83ed-02609301cd85" />
 
 ---
 
@@ -1041,6 +1049,7 @@ Mở `AndroidManifest.xml` và kiểm tra:
     </application>
 </manifest>
 ```
+<img width="1450" height="965" alt="image" src="https://github.com/user-attachments/assets/b891623b-38e0-4826-85c7-6fc2a95fc41c" />
 
 ---
 
